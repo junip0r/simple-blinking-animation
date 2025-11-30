@@ -1,5 +1,4 @@
 using RimWorld;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Verse;
@@ -15,11 +14,6 @@ public class CompBlinking : ThingComp
 	const int blinkIntervalMax = 400;
 
 	private static readonly HashSet<string> warnedMissing = [];
-
-	private static readonly Lazy<PawnRenderNodeTagDef> Eyelids = new(delegate
-	{
-		return DefDatabase<PawnRenderNodeTagDef>.GetNamedSilentFail("Eyelids");
-	});
 
 	private Pawn pawn;
 	private HeadTypeDef prevHeadType;
@@ -125,11 +119,7 @@ public class CompBlinking : ThingComp
 		{
 			return;
 		}
-		if (Eyelids.Value is not PawnRenderNodeTagDef eyelids)
-		{
-			return;
-		}
-		if (renderTree.nodesByTag.TryGetValue(eyelids, out var value))
+		if (renderTree.nodesByTag.TryGetValue(DefOf.Eyelids, out var value))
 		{
 			value.requestRecache = true;
 		}
