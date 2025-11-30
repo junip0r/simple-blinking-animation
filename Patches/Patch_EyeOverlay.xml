@@ -1,0 +1,47 @@
+<Patch>
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/PawnRenderTreeDef[defName="Humanlike"]/root/children/li[tagDef="Head"]/children</xpath>
+		<value>
+			<li Class="BlinkingAnimation.PawnRenderNodeProperties_EyeOverlay">
+				<texPath>Things/Pawn/Humanlike/Eyelids/EyeOverlay_Male</texPath>
+				<texPathFemale>Things/Pawn/Humanlike/Eyelids/EyeOverlay_Female</texPathFemale>
+				<anchorTag>RightEye</anchorTag>
+				<parentTagDef>Head</parentTagDef>
+				<rotDrawMode>Fresh, Rotting</rotDrawMode>
+				<colorType>Skin</colorType>
+				<useRottenColor>true</useRottenColor>
+				<useSkinShader>true</useSkinShader>
+				<drawSize>0.2</drawSize>
+				<side>Right</side>
+				<drawData>
+					<defaultData>
+						<layer>55</layer>
+						<offset>(0, 0, -0.25)</offset>
+					</defaultData>
+				</drawData>
+			</li>
+			<li Class="BlinkingAnimation.PawnRenderNodeProperties_EyeOverlay">
+				<texPath>Things/Pawn/Humanlike/Eyelids/EyeOverlay_Male</texPath>
+				<texPathFemale>Things/Pawn/Humanlike/Eyelids/EyeOverlay_Female</texPathFemale>
+				<anchorTag>LeftEye</anchorTag>
+				<parentTagDef>Head</parentTagDef>
+				<rotDrawMode>Fresh, Rotting</rotDrawMode>
+				<colorType>Skin</colorType>
+				<useRottenColor>true</useRottenColor>
+				<useSkinShader>true</useSkinShader>
+				<drawSize>0.2</drawSize>
+				<side>Left</side>
+				<drawData>
+					<defaultData>
+						<layer>55</layer>
+						<offset>(0, 0, -0.25)</offset>
+						<flip>true</flip>
+					</defaultData>
+					<dataWest>
+						<flip>false</flip>
+					</dataWest>
+				</drawData>
+			</li>
+		</value>
+	</Operation>
+</Patch>

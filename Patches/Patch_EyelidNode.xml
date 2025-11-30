@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/PawnRenderTreeDef[defName="Humanlike"]/root/children/li[tagDef="Head"]/children</xpath>
+		<value>
+			<li Class="BlinkingAnimation.PawnRenderNodeProperties_Eyelids">
+				<debugLabel>Eyelids</debugLabel>
+				<tagDef>Eyelids</tagDef>
+				<nodeClass>BlinkingAnimation.PawnRenderNode_Eyelids</nodeClass>
+				<workerClass>BlinkingAnimation.PawnRenderNodeWorker_Eyelids</workerClass>
+				<overlayLayer>Head</overlayLayer>
+				<baseLayer>51</baseLayer>
+				<rotDrawMode>Fresh,Rotting</rotDrawMode>
+				<colorType>Skin</colorType>
+				<useRottenColor>true</useRottenColor>
+				<useSkinShader>true</useSkinShader>
+				<!--<useGraphic>true</useGraphic>-->
+				<drawData>
+				  <scaleOffsetByBodySize>true</scaleOffsetByBodySize>
+				</drawData>
+			</li>
+		</value>
+	</Operation>
+</Patch>
