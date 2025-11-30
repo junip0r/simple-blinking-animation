@@ -88,10 +88,10 @@ public class CompBlinking : ThingComp
 		UpdateHasEyeNode();
 	}
 
-    public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
-    {
+	public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
+	{
 		spawned = false;
-    }
+	}
 
 	public override void CompTick()
 	{

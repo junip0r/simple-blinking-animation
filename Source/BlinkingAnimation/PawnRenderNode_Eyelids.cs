@@ -10,7 +10,7 @@ public class PawnRenderNode_Eyelids(Pawn pawn, PawnRenderNodeProperties props, P
 {
 	private static readonly Dictionary<Key, Graphic_Multi> cachedGraphics = [];
 
-    public override GraphicMeshSet MeshSetFor(Pawn pawn)
+	public override GraphicMeshSet MeshSetFor(Pawn pawn)
 	{
 		return HumanlikeMeshPoolUtility.GetHumanlikeHeadSetForPawn(pawn);
 	}
