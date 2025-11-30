@@ -54,9 +54,9 @@ public class CompBlinking : ThingComp
 			if (prevHeadType != headType)
 			{
 				prevHeadType = headType;
-				string defName = headType.defName;
-				string pathBase = $"Things/Pawn/Humanlike/Eyelids/{defName}_Closed";
-				string pathSouth = $"{pathBase}_south";
+				var defName = headType.defName;
+				var pathBase = $"Things/Pawn/Humanlike/Eyelids/{defName}_Closed";
+				var pathSouth = $"{pathBase}_south";
 				if (!ContentFinder<Texture2D>.Get(pathSouth, reportFailure: false))
 				{
 					if (Prefs.DevMode && warnedMissing.Add(defName))

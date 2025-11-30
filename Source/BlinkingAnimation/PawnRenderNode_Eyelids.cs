@@ -32,7 +32,10 @@ public class PawnRenderNode_Eyelids(Pawn pawn, PawnRenderNodeProperties props, P
 		{
 			return null;
 		}
-		string pathBase = comp.EyelidTexturePathBase;
+		if (comp.EyelidTexturePathBase is not string pathBase)
+		{
+			return null;
+		}
 		Color color = ColorFor(pawn);
 		Vector2 drawSize = Vector2.one;
 		if (props != null && props.drawData?.scaleOffsetByBodySize == true && pawn.ageTracker?.CurLifeStage != null)
