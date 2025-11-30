@@ -1,51 +1,73 @@
 using RimWorld;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 using Verse;
 
 namespace BlinkingAnimation;
 
 public class CompBlinking : ThingComp
 {
+	const int blinkDurationTicks = 12;
+
+	const int blinkIntervalMin = 200;
+
+	const int blinkIntervalMax = 400;
+
+	private static readonly HashSet<string> warnedMissing = [];
+
 	private static readonly Lazy<PawnRenderNodeTagDef> Eyelids = new(delegate
 	{
 		return DefDatabase<PawnRenderNodeTagDef>.GetNamedSilentFail("Eyelids");
 	});
 
 	private Pawn pawn;
+	private HeadTypeDef prevHeadType;
+	private string eyelidTexturePathBase;
 
-	internal bool hasEyeNode;
+	private bool spawned;
 
 	private int nextBlinkTick;
 
-	private int blinkDurationTicks = 12;
+	private bool isBlinkingNow;
 
-	private int blinkIntervalMin = 200;
+	internal bool hasEyeNode;
 
-	private int blinkIntervalMax = 400;
-
-	private bool isBlinkingCached;
-
-	private bool IsBlinkingNow
+	internal bool EyelidsClosed
 	{
 		get
 		{
-			if (Find.TickManager.TicksGame < nextBlinkTick)
+			if (pawn.Spawned && pawn.Awake())
 			{
-				return isBlinkingCached;
+				return Find.TickManager.TicksGame < nextBlinkTick && isBlinkingNow;
 			}
-			return false;
+			return true;
 		}
 	}
 
-	public bool EyelidsClosed
+	internal string EyelidTexturePathBase
 	{
 		get
 		{
-			if (parent.Spawned && pawn.Awake())
+			if (pawn.story is null) return null;
+			var headType = pawn.story.headType;
+			if (prevHeadType != headType)
 			{
-				return IsBlinkingNow;
+				prevHeadType = headType;
+				string defName = headType.defName;
+				string pathBase = $"Things/Pawn/Humanlike/Eyelids/{defName}_Closed";
+				string pathSouth = $"{pathBase}_south";
+				if (!ContentFinder<Texture2D>.Get(pathSouth, reportFailure: false))
+				{
+					if (Prefs.DevMode && warnedMissing.Add(defName))
+					{
+						Log.Warning($"[BlinkingAnimation] Missing eyelid texture for headType '{defName}' at {pathSouth}. Using fallback.");
+					}
+					pathBase = "Things/Pawn/Humanlike/Eyelids/Fallback_Blank";
+				}
+				eyelidTexturePathBase = pathBase;
 			}
-			return true;
+			return eyelidTexturePathBase;
 		}
 	}
 
@@ -62,26 +84,30 @@ public class CompBlinking : ThingComp
 
 	public override void PostSpawnSetup(bool respawningAfterLoad)
 	{
-		base.PostSpawnSetup(respawningAfterLoad);
+		spawned = true;
 		UpdateHasEyeNode();
 	}
 
+    public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
+    {
+		spawned = false;
+    }
+
 	public override void CompTick()
 	{
-		base.CompTick();
-		if (pawn.Spawned)
+		if (spawned)
 		{
-			int ticksGame = Find.TickManager.TicksGame;
+			var ticksGame = Find.TickManager.TicksGame;
 			if (ticksGame >= nextBlinkTick)
 			{
-				if (!isBlinkingCached)
+				if (!isBlinkingNow)
 				{
-					isBlinkingCached = true;
+					isBlinkingNow = true;
 					nextBlinkTick = ticksGame + blinkDurationTicks;
 				}
 				else
 				{
-					isBlinkingCached = false;
+					isBlinkingNow = false;
 					nextBlinkTick = ticksGame + Rand.RangeInclusive(blinkIntervalMin, blinkIntervalMax);
 				}
 				InvalidateEyelidNode();
@@ -89,10 +115,13 @@ public class CompBlinking : ThingComp
 		}
 	}
 
-	public void InvalidateEyelidNode()
+	internal void InvalidateEyelidNode()
 	{
-		var renderTree = pawn.Drawer?.renderer?.renderTree;
-		if (renderTree is null || !renderTree.Resolved)
+		if (pawn.Drawer?.renderer?.renderTree is not PawnRenderTree renderTree)
+		{
+			return;
+		}
+		if (!renderTree.Resolved)
 		{
 			return;
 		}
