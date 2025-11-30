@@ -60,11 +60,11 @@ public class CompBlinking : ThingComp
 		base.Initialize(props);
 	}
 
-public override void PostSpawnSetup(bool respawningAfterLoad)
-{
-base.PostSpawnSetup(respawningAfterLoad);
+	public override void PostSpawnSetup(bool respawningAfterLoad)
+	{
+		base.PostSpawnSetup(respawningAfterLoad);
 		UpdateHasEyeNode();
-}
+	}
 
 	public override void CompTick()
 	{
