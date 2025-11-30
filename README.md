@@ -4,4 +4,4 @@ A fork of [this mod](https://steamcommunity.com/sharedfiles/filedetails/?id=3529
 
 - Do less work in the pawn component tick
 - Do less work in the pawn renderer
-- Textures 4x upscaled using [Upscayle](https://github.com/upscayl/upscayl) (not perfect but good enough)
+- Textures 4x upscaled using [Upscayl](https://github.com/upscayl/upscayl) (not perfect but good enough)
